@@ -6,7 +6,7 @@ categories:
   - Java基础
 date: 2020-09-07 22:12:49
 ---
-为了减少程序员实现List接口所需的工作量，AbstractList提供了支持随机访问数据结构（比如数组）的最基本的实现。AbstractSequentialLIst提供了支持循序访问数据结构（比如链表）的最基本的实现。
+为了减少程序员实现List接口所需的工作量，AbstractList提供了支持随机访问数据结构（比如数组）的最基本的实现。AbstractSequentialLIst提供了支持顺序访问数据结构（比如链表）的最基本的实现。
 
 <!--more-->
 
