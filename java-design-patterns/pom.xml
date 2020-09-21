@@ -43,6 +43,8 @@
 
     <modules>
         <module>abstract-document</module>
+        <module>abstract-factory</module>
+        <module>visitor</module>
     </modules>
 
     <repositories>
