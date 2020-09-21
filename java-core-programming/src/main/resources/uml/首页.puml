@@ -1,0 +1,9 @@
+@startuml
+首页 -> module_Ops: 按照产品（productId）和年份(year)统计批次数
+module_Ops -> module_Ops: 参数校验
+module_Ops -> provider: 转发到provider
+provider -> mysql: 按天划分批次进行统计
+mysql --> provider: 返回查询结果
+provider --> module_Ops: 返回查询结果
+module_Ops --> 首页: 返回查询结果
+@enduml

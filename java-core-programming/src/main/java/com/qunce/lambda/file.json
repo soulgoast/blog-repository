@@ -1,0 +1,55 @@
+{
+  "devSn":"5AFA80BA8040",
+  "devType":"RFID",
+  "corpID":"TY00100001",
+  "timeStamp":"1970-01-01 00:00:00",
+  "protocolNo":"15",
+  "busiType":"DCIM",
+  "deviceMainVersion":"2.0",
+  "deviceOtherVersion":"2.3",
+  "slaveBoadNum":"2",
+  "DATA":[
+    {
+      "tagSN":"04687dda803b80",
+      "tagLol":"10",
+      "tagFlag ":"0",
+      " occupyNum": "1"
+    },
+    {
+      "tagSN":"040c7ee2803b80",
+      "tagLol":"8",
+      "tagFlag":"0",
+      " occupyNum": "2"
+    },
+    {
+      "tagSN":"04287de2803b80",
+      "tagLol":"6",
+      "tagFlag ":"0",
+      " occupyNum": "3"
+    },
+    {
+      "tagSN":"04267de2803b80",
+      "tagLol":"4",
+      "tagFlag ":"0",
+      " occupyNum": "129"
+    },
+    {
+      "tagSN":"040c7ee2803b80",
+      "tagLol":"8",
+      "tagFlag":"0",
+      " occupyNum": "2"
+    },
+    {
+      "tagSN":"04287de2803b80",
+      "tagLol":"6",
+      "tagFlag ":"0",
+      " occupyNum": "3"
+    },
+    {
+      "tagSN":"04267de2803b80",
+      "tagLol":"4",
+      "tagFlag ":"0",
+      " occupyNum": "129"
+    }
+  ]
+}
