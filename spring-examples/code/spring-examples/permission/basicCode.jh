@@ -1,0 +1,52 @@
+entity SysCaptcha {
+    code String required maxlength(6),
+    expireTime Instant,
+    uuid maxlength(32)
+}
+
+entity SysConfig {
+    paramKey String maxlength(50),
+    paramValue String required maxlength(255),
+    remarks String maxlength(255),
+    status Integer required
+}
+
+entity SysDict {
+    label String required maxlength(32),
+    type String required maxlength(32),
+    value String required maxlength(32),
+    description String maxlength(128),
+    remarks String maxlength(255),
+    parentId Long,
+    delFlag String required maxlength(1),
+    createdBy String required maxlength(50),
+    createdTime Instant,
+    lastModifiedBy String maxlength(50),
+    lastModifiedTime Instant,
+} 
+
+entity SysLog {
+    operation String required maxlength(32),
+    method String required maxlength(100),
+    params       longtext     null,
+    ip String maxlength(20),
+    time         bigint       not null,
+    user_name    varchar(32)  not null,
+    created_time datetime     null
+}
+
+
+entity IotTaskCount {
+    taskNo String required maxlength(20),
+    count Integer required,
+    pushNum Integer required,
+    updateNum Integer required,
+    successNum Integer required,
+    failNum Integer required,
+    count Integer required
+}
+
+paginate all with pagination
+dto * with mapstruct
+service all with serviceClass
+filter all 

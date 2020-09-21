@@ -1,0 +1,7 @@
+spring:
+  data:
+    jest:
+      uris: http://localhost:9200
+  elasticsearch:
+    rest:
+      uris: ${spring.data.jest.uris}
