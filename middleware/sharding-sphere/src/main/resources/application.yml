@@ -1,0 +1,28 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    datasource:
+      name: m1
+      m1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://114.215.86.106:3306/order_db?serverTimezone=GMT%2B8&characterEncoding=UTF-8
+        username: root
+        password: '@Qq928919122'
+    sharding:
+      tables:
+        course:
+          actual-data-nodes: m1.course_${0..1}
+          key-generator:
+            column: cid
+            type: SNOWFLAKE
+          table-strategy:
+            inline:
+              sharding-column: cid
+              algorithm-expression: course_${ cid %2 }
+    props:
+      sql:
+        show: true
+
+
