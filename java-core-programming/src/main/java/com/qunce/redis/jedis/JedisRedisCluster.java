@@ -32,10 +32,11 @@ public class JedisRedisCluster {
 /*        Set<String> hkeys = cluster.hkeys("*");
         hkeys.stream().forEach(System.out::println);*/
 
-        String str = cluster.get("主板01");
-        System.out.println(str);
-
-
+        // String str = cluster.get("appnotestzr001%devicenotestzr001%status");
+        // System.out.println(str);
+        // cluster.set("appnotestzr001%devicenotestzr001%status", "在线");
+        System.out.println(cluster.get("主板01"));
+        cluster.del("主板01");
     }
 
 

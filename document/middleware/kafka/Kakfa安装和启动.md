@@ -21,6 +21,27 @@ $ cd kafka_2.13-2.6.0/
 $ zkServer.sh start
 ```
 
+配置kafka可远程连接：
+
+```properties
+############################# Socket Server Settings #############################
+
+# The address the socket server listens on. It will get the value returned from
+# java.net.InetAddress.getCanonicalHostName() if not configured.
+#   FORMAT:
+#     listeners = listener_name://host_name:port
+#   EXAMPLE:
+#     listeners = PLAINTEXT://your.host.name:9092
+#listeners=PLAINTEXT://:9092
+listeners=PLAINTEXT://:9092
+
+# Hostname and port the broker will advertise to producers and consumers. If not set,
+# it uses the value for "listeners" if configured.  Otherwise, it will use the value
+# returned from java.net.InetAddress.getCanonicalHostName().
+#advertised.listeners=PLAINTEXT://your.host.name:9092
+advertised.listeners=PLAINTEXT://10.8.11.65:9092
+```
+
  打开另一个终端会话并运行: 
 
 ```shell
@@ -117,3 +138,4 @@ Kafka Streams演示和应用程序开发教程演示了如何从头到尾编写�
 ```shell
 $ rm -rf /tmp/kafka-logs /tmp/zookeeper
 ```
+

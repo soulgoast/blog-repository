@@ -1,5 +1,6 @@
 package com.qunce.kafka.started;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -20,21 +21,22 @@ import java.util.Properties;
  */
 public class KafkaConsumerDemo {
 
+    public static final String topic = "quickstart-events";
+
     @Test
     public void consumer() {
         Properties props = new Properties();
         props.put("bootstrap.servers", "10.8.11.65:9092");
-        props.put("group.id", "quickstart-events");
-        props.put("enable.auto.commit", "true");
-        props.put("auto.commit.interval.ms", "1000");
+        props.put("group.id", "test");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("auto.offset.reset","earliest");
+        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
+        props.put(ConsumerConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG, 1000);
 
+        //KafkaConsumer类不是线程安全的
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("quickstart-events"));
-
-        try {
+        consumer.subscribe(Arrays.asList(topic));
+        try{
             while (true) {
                 //拉取消息
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
@@ -42,7 +44,7 @@ public class KafkaConsumerDemo {
                     System.out.printf("offset = %d, key = %s, value = %s%n", record.offset(), record.key(), record.value());
                 }
             }
-        } finally {
+        }finally{
             consumer.close();
         }
     }

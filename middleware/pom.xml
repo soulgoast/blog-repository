@@ -11,9 +11,15 @@
     <modules>
         <module>kafka</module>
         <module>undertow</module>
+        <module>sharding-sphere</module>
+        <module>iot/dcim</module>
+        <module>spring/springmvc</module>
+        <module>spring/spring-core</module>
+        <module>spring/spring-context</module>
     </modules>
 
     <properties>
+        <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
         <kafka-clients.version>2.6.0</kafka-clients.version>
         <jackson-databind.version>2.9.5</jackson-databind.version>
 
@@ -27,8 +33,25 @@
         <junit-vintage.version>${junit.version}.2</junit-vintage.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
@@ -54,6 +77,19 @@
                 <groupId>io.undertow</groupId>
                 <artifactId>undertow-websockets-jsr</artifactId>
                 <version>${undertow.version}</version>
+            </dependency>
+
+
+            <!-- shardingSphere -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.21</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc-core</artifactId>
+                <version>${sharding-jdbc.version}</version>
             </dependency>
 
             <!-- 单元测试 -->
