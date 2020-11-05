@@ -10,11 +10,15 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>kafka</module>
+        <module>undertow</module>
     </modules>
 
     <properties>
         <kafka-clients.version>2.6.0</kafka-clients.version>
         <jackson-databind.version>2.9.5</jackson-databind.version>
+
+        <undertow.version>2.1.0.Final</undertow.version>
+
 
         <compiler.version>3.0</compiler.version>
 
@@ -34,6 +38,22 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-streams</artifactId>
                 <version>${kafka-clients.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-core</artifactId>
+                <version>${undertow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-servlet</artifactId>
+                <version>${undertow.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.undertow</groupId>
+                <artifactId>undertow-websockets-jsr</artifactId>
+                <version>${undertow.version}</version>
             </dependency>
 
             <!-- 单元测试 -->
