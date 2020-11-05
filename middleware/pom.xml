@@ -11,6 +11,10 @@
     <modules>
         <module>kafka</module>
         <module>sharding-sphere</module>
+        <module>iot/dcim</module>
+        <module>spring/springmvc</module>
+        <module>spring/spring-core</module>
+        <module>spring/spring-context</module>
     </modules>
 
     <properties>
