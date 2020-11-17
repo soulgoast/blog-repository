@@ -11,21 +11,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.qunce.spring</groupId>
-    <artifactId>springmvc</artifactId>
+    <artifactId>jpa</artifactId>
 
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+    <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-jpa</artifactId>
+    </dependency>
     </dependencies>
 </project>

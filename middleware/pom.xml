@@ -15,6 +15,8 @@
         <module>spring/springmvc</module>
         <module>spring/spring-core</module>
         <module>spring/spring-context</module>
+        <module>cache/redis-client</module>
+        <module>spring/jpa</module>
     </modules>
 
     <properties>
@@ -25,12 +27,14 @@
         <sharding-jdbc.version>4.1.1</sharding-jdbc.version>
 
         <lombok.version>1.18.12</lombok.version>
+        <letture.version>6.0.1.RELEASE</letture.version>
 
         <compiler.version>3.0</compiler.version>
 
         <junit.version>4.12</junit.version>
         <junit-jupiter.version>5.0.2</junit-jupiter.version>
         <junit-vintage.version>${junit.version}.2</junit-vintage.version>
+
     </properties>
 
     <dependencies>
@@ -76,6 +80,13 @@
                 <version>${sharding-jdbc.version}</version>
             </dependency>
 
+            <!-- cache -->
+            <dependency>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${letture.version}</version>
+            </dependency>
+
             <!-- 单元测试 -->
             <dependency>
                 <groupId>junit</groupId>
@@ -112,6 +123,27 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <!-- jpa -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-bom</artifactId>
+                <version>2020.0.1</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <!-- apache commons -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.10</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
