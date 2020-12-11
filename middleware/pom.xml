@@ -17,6 +17,9 @@
         <module>spring/spring-context</module>
         <module>cache/redis-client</module>
         <module>spring/jpa</module>
+        <module>cache/caffeine</module>
+        <module>conn-pool/druid</module>
+        <module>task-scheduling</module>
     </modules>
 
     <properties>
@@ -145,7 +148,22 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.10</version>
             </dependency>
+            <!-- Gson -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.6</version>
+            </dependency>
+
+            <!-- 任务调度 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-quartz</artifactId>
+            </dependency>
         </dependencies>
+
+
+
     </dependencyManagement>
 
     <build>
