@@ -6,10 +6,7 @@
 
 package com.qunce.redis.jedis;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.Test;
 import redis.clients.jedis.Jedis;
 
 import java.util.Set;
@@ -29,19 +26,25 @@ public class JedisSimpleDemo {
     /**
      * 连接redis
      */
-    @BeforeEach
     public void connectRedis() {
         //连接redis ，redis的默认端口是6379
-        jedis = new Jedis("localhost", 6379);
+
+
+        // jedis.disconnect();//断开连接
+
+
+    }
+
+    @Test
+    public void getKey() {
+        jedis = new Jedis("10.8.40.216", 6379);
 
         //验证密码，如果没有设置密码这段代码省略
         // jedis.auth("password");
 
         jedis.connect();//连接
-
-        // jedis.disconnect();//断开连接
-
-
+        String mainBoard01 = jedis.get("mainBoard01");
+        System.out.println(mainBoard01);
     }
 
     @Test

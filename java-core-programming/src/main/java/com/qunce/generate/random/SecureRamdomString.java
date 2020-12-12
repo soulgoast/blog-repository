@@ -23,6 +23,5 @@ public class SecureRamdomString {
         UUID uuid = UUID.randomUUID();
         String a  = uuid.toString().replaceAll("-", "").substring(17);
         System.out.println(a + ":" + a.length());
-
     }
 }
