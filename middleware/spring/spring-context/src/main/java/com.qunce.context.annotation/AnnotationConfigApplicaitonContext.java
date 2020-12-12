@@ -1,7 +1,9 @@
 package com.qunce.context.annotation;
 
 /**
- * @Description TODO
+ * @Description
+ * 独立的应用程序上下文，接受注解类作为输入。尤其是通过注解@Configuration标注的类。
+ *
  * @Author hu zhongxi
  */
 public class AnnotationConfigApplicaitonContext {

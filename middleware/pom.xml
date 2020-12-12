@@ -16,14 +16,16 @@
         <module>spring/springmvc</module>
         <module>spring/spring-core</module>
         <module>spring/spring-context</module>
+        <module>spring/spring-beans</module>
     </modules>
 
     <properties>
         <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
         <kafka-clients.version>2.6.0</kafka-clients.version>
         <jackson-databind.version>2.9.5</jackson-databind.version>
-
+        <jsr305.version>3.0.2</jsr305.version>
         <undertow.version>2.1.0.Final</undertow.version>
+        <lombok.version>1.18.12</lombok.version>
 
 
         <compiler.version>3.0</compiler.version>
@@ -128,6 +130,12 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson-databind.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${jsr305.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
