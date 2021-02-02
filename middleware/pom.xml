@@ -21,7 +21,9 @@
         <module>spring/jpa</module>
         <module>cache/caffeine</module>
         <module>conn-pool/druid</module>
-        <module>task-scheduling</module>    </modules>
+        <module>task-scheduling</module>
+        <module>spring/spring-data-influxdb</module>
+    </modules>
 
     <properties>
         <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
@@ -152,7 +154,7 @@
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>${jsr305.version}</version>
-            </dependency
+            </dependency>
             <!-- jpa -->
             <dependency>
                 <groupId>org.springframework.data</groupId>

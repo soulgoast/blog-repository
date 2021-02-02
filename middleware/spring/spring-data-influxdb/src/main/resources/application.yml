@@ -1,0 +1,3 @@
+spring:
+  influx:
+    url: http://114.215.86.216:8086
