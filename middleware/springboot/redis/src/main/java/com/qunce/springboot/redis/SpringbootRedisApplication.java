@@ -1,0 +1,17 @@
+package com.qunce.springboot.redis;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * @Description TODO
+ * @Author hu zhongxi
+ */
+@SpringBootApplication
+public class SpringbootRedisApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringbootRedisApplication.class, args);
+    }
+
+}

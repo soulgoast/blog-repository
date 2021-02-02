@@ -22,6 +22,7 @@
         <module>cache/caffeine</module>
         <module>conn-pool/druid</module>
         <module>task-scheduling</module>
+        <module>springboot/redis</module>
         <module>spring/spring-data-influxdb</module>
     </modules>
 
