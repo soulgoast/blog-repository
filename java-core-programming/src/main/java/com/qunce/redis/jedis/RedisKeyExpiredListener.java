@@ -46,16 +46,26 @@ public class RedisKeyExpiredListener extends JedisPubSub {
         Jedis jedis = pool.getResource();
         jedis.psubscribe(new RedisKeyExpiredListener(), "__keyevent@0__:expired");*/
 
-        HostAndPort hostAndPort = new HostAndPort("10.8.40.165", 7000);
+        HostAndPort hostAndPort1 = new HostAndPort("10.8.40.216", 7000);
+        HostAndPort hostAndPort2 = new HostAndPort("10.8.40.216", 7001);
+        HostAndPort hostAndPort3 = new HostAndPort("10.8.40.216", 7002);
+        HostAndPort hostAndPort4 = new HostAndPort("10.8.40.216", 7003);
+        HostAndPort hostAndPort5 = new HostAndPort("10.8.40.216", 7004);
+        HostAndPort hostAndPort6 = new HostAndPort("10.8.40.216", 7005);
         Set<HostAndPort> hostAndPortSet = new HashSet<>();
-        hostAndPortSet.add(hostAndPort);
+        hostAndPortSet.add(hostAndPort1);
+        hostAndPortSet.add(hostAndPort2);
+        hostAndPortSet.add(hostAndPort3);
+        hostAndPortSet.add(hostAndPort4);
+        hostAndPortSet.add(hostAndPort5);
+        hostAndPortSet.add(hostAndPort6);
         JedisCluster jedis = new JedisCluster(hostAndPortSet);
         jedis.psubscribe(new RedisKeyExpiredListener(), "__keyevent@0__:expired");
     }
 
     @Test
     public void test() {
-/*        JedisPool pool = new JedisPool(new JedisPoolConfig(), "10.8.40.165", 7000, Protocol.DEFAULT_TIMEOUT); // 10.8.40.248
+/*        JedisPool pool = new JedisPool(new JedisPoolConfig(), "10.8.40.216", 7000, Protocol.DEFAULT_TIMEOUT); // 10.8.40.248
         Jedis jedis = pool.getResource();
         jedis.set("notify", "你还在吗");
         jedis.expire("notify", 10);*/
@@ -64,9 +74,12 @@ public class RedisKeyExpiredListener extends JedisPubSub {
         Set<HostAndPort> hostAndPortSet = new HashSet<>();
         hostAndPortSet.add(hostAndPort);
         JedisCluster jedis = new JedisCluster(hostAndPortSet);
-        jedis.set("wh01%dev01%status", "在线");
+
+        jedis.set("notify", "你还在吗");
+        jedis.expire("notify", 1);
+/*        jedis.set("wh01%dev01%status", "在线");
         jedis.set("wh01%dev01%message", "{status:success}");
-        jedis.set("wh01%dev01%msgTime", "2020-05-20 11:31:12");
+        jedis.set("wh01%dev01%msgTime", "2020-05-20 11:31:12");*/
     }
 
 }
