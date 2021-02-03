@@ -26,6 +26,7 @@
         <module>spring/spring-data-influxdb</module>
         <module>vert.x/core</module>
         <module>vert.x/sql-client-templates</module>
+        <module>vert.x/vertx-pg-client</module>
     </modules>
 
     <properties>

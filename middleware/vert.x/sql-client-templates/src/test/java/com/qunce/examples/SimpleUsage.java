@@ -15,14 +15,14 @@ public class SimpleUsage {
     @Test
     public void test() {
         Map<String, Object> parameters = Collections.singletonMap("id", 1);
-        SqlTemplate
+/*        SqlTemplate
                 .forQuery(client, "SELECT * FROM users WHERE id=#{id}")
                 .execute(parameters)
                 .onSuccess(users -> {
                     users.forEach(row -> {
                         System.out.println(row.getString("first_name") + " " + row.getString("last_name"));
                     });
-                });
+                });*/
     }
 
 }
