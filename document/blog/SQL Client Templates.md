@@ -1,3 +1,12 @@
+---
+title: SQL Client Templates
+tags:
+  - dbClient
+categories:
+  - Vert.x
+date: 2021-02-03 22:20:03
+---
+
 # SQL Client Templates
 
  SQL Client Templates是一个小型库，旨在方便SQL查询的执行。 
@@ -23,6 +32,8 @@ dependencies {
  implementation 'io.vertx:vertx-sql-client-templates:4.0.1-SNAPSHOT'
 }
 ```
+
+<!--more-->
 
  # 入门指南
 
