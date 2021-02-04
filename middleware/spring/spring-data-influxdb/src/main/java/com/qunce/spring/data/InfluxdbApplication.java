@@ -31,7 +31,5 @@ public class InfluxdbApplication {
         InfluxDB connect = InfluxDBFactory.connect("http://114.215.86.216:8086");
         InfluxDB influxDB = connect.enableBatch();
         influxDB.setDatabase("mydb");
-        Point point = Point.measurement("").Builder()
-
     }
 }

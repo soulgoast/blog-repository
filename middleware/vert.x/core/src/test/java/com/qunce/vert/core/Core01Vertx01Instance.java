@@ -1,10 +1,7 @@
 package com.qunce.vert.core;
 
-import io.vertx.core.Future;
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.WorkerExecutor;
-import io.vertx.core.http.HttpServer;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -13,7 +10,15 @@ import java.util.concurrent.TimeUnit;
  * @Description TODO
  * @Author hu zhongxi
  */
-public class VertxTest {
+public class Core01Vertx01Instance {
+
+    private void test() {
+
+    }
+
+    public static void main(String[] args) {
+        Vertx vertx = Vertx.vertx();
+    }
 
     @Test
     public void instance() {
@@ -22,14 +27,13 @@ public class VertxTest {
 
     @Test
     public void instanceAndConfig() {
-        Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(40));
+
     }
 
     @Test
     public void timedEvent() throws InterruptedException {
         Vertx vertx = Vertx.vertx();
         vertx.setPeriodic(1000, id -> System.out.println(id + "time fired!"));
-        TimeUnit.SECONDS.sleep(20);
     }
 
     /**

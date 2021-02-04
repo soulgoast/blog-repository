@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class FutureResult {
 
-    @Test
+/*    @Test
     public void test() throws InterruptedException {
         Vertx vertx = Vertx.vertx();
         FileSystem fileSystem = vertx.fileSystem();
@@ -76,6 +76,6 @@ public class FutureResult {
                 // At least one server failed
             }
         }));
-    }
+    }*/
 
 }

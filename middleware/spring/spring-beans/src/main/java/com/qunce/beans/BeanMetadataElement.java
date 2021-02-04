@@ -5,8 +5,6 @@
  */
 package com.qunce.beans;
 
-import com.sun.istack.internal.Nullable;
-
 /**
  * @ClassName BeanMetadataElement
  * @Description TODO
@@ -18,6 +16,5 @@ import com.sun.istack.internal.Nullable;
  */
 public interface BeanMetadataElement {
 
-    @Nullable
     Object getSource();
 }

@@ -1208,7 +1208,569 @@ Vertx.clusteredVertx(options, res -> {
 
 # 配置事件总线（Configuring the event bus）
 
-可以配置事件总线。当事件总线分布在集群时，它特别有用。
+可以配置事件总线。当事件总线分布在集群中，它特别有用。底层事件总线使用TCP连接进行收发消息，因此 `EventBusOptions` 允许您配置这些TCP连接的所有方面。  由于事件总线充当服务器和客户端，所以配置很接近   `NetClientOptions` 和`NetServerOptions`。
+
+```java
+VertxOptions options = new VertxOptions()
+    .setEventBusOptions(new EventBusOptions()
+        .setSsl(true)
+        .setKeyStoreOptions(new JksOptions().setPath("keystore.jks").setPassword("wibble"))
+        .setTrustStoreOptions(new JksOptions().setPath("keystore.jks").setPassword("wibble"))
+        .setClientAuth(ClientAuth.REQUIRED)
+    );
+
+Vertx.clusteredVertx(options, res -> {
+  if (res.succeeded()) {
+    Vertx vertx = res.result();
+    EventBus eventBus = vertx.eventBus();
+    System.out.println("We now have a clustered event bus: " + eventBus);
+  } else {
+    System.out.println("Failed: " + res.cause());
+  }
+});
+```
+
+ 前面的代码片段描述了如何将SSL连接用于事件总线，而不是普通的TCP连接。 
+
+| 警告                                                         |
+| ------------------------------------------------------------ |
+| 要在集群模式下实施安全性，必须将集群管理器配置为使用加密或实施安全性。有关更多细节，请参阅集群管理器的文档。 |
+
+ 事件总线配置需要在所有集群节点中保持一致。 
+
+ `EventBusOptions`还允许指定是否群集事件总线、端口和主机。
+
+ 当在容器中使用时，你也可以配置公共主机和端口: 
+
+```java
+VertxOptions options = new VertxOptions()
+    .setEventBusOptions(new EventBusOptions()
+        .setClusterPublicHost("whatever")
+        .setClusterPublicPort(1234)
+    );
+
+Vertx.clusteredVertx(options, res -> {
+  if (res.succeeded()) {
+    Vertx vertx = res.result();
+    EventBus eventBus = vertx.eventBus();
+    System.out.println("We now have a clustered event bus: " + eventBus);
+  } else {
+    System.out.println("Failed: " + res.cause());
+  }
+});
+```
+
+# JSON
+
+不像其他的编程语言，Java没有专门支持 [JSON](http://json.org/)  的类， 所以我们提供了两个类，使得JSON的处理容易些。 
+
+## JSON对象
+
+ `JsonObject`表示JSON对象。
+
+ JSON对象基本可以认为是个map，键是字符串，而值可以是JSON支持的类型中的一种(字符串、数字、布尔型)。
+
+JSON对象也支持null 值。
+
+### 创建JSON 对象
+
+默认的构造器可以创建一个空的JSON对象。
+
+你也可以从JSON格式的字符串创建一个JSON对象：
+
+```java
+String jsonString = "{\"foo\":\"bar\"}";
+JsonObject object = new JsonObject(jsonString);
+```
+
+### 向JSON对象中添加条目
+
+ `put`  方法用于向JSON对象中添加条目。
+
+ put方法支持流式API： 
+
+```java
+JsonObject object = new JsonObject();
+object.put("foo", "bar").put("num", 123).put("mybool", true);
+```
+
+### 从JSON对象中取值
+
+ 可以使用类似**getXXX**方法从JSON对象中取值，例如： 
+
+```java
+String val = jsonObject.getString("some-key");
+int intVal = jsonObject.getInteger("some-other-key");
+```
+
+#### 将JSON对象编码为字符串
+
+[encode](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/json/JsonObject.html#encode--)方法用来将JSON对象转换为字符串。
+
+### JSON 数组
+
+[JsonArray](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/json/JsonArray.html)类用来表示JSON 数组。
+
+一个JSON 数组是一些值(字符串、数字或者布尔型)组成的序列。
+
+JSON 数组也可以包括null 。
+
+#### 创建JSON 数组
+
+默认的构造器可以创建一个空的JSON 数组。
+
+可以从JSON格式的字符串创建JSON 数组：
+
+
+
+```cpp
+String jsonString = "[\"foo\",\"bar\"]";
+JsonArray array = new JsonArray(jsonString);
+```
+
+#### 往JSON数组中添加元素
+
+[add](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/json/JsonArray.html#add-java.lang.Enum-)方法：
+
+
+
+```csharp
+JsonArray array = new JsonArray();
+array.add("foo").add(123).add(false);
+```
+
+#### 从JSON 数组中取值
+
+类似下面这样：
+
+
+
+```cpp
+String val = array.getString(0);
+Integer intVal = array.getInteger(1);
+Boolean boolVal = array.getBoolean(2);
+```
+
+#### 将JSON 数组转换为字符串
+
+使用[encode](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/json/JsonArray.html#encode--)即可。
+
+# Json 指针
+
+Vert.x 提供了来自RFC6901的Json指针的实现。您可以使用指针进行查询和写入。你可以建立你的 `JsonPointer`使用字符串、URI或手动添加路径:
+
+```java
+JsonPointer pointer1 = JsonPointer.from("/hello/world");
+// Build a pointer manually
+JsonPointer pointer2 = JsonPointer.create()
+  .append("hello")
+  .append("world");
+```
+
+在实例化指针之后，使用 `queryJson`查询JSON值。 您可以使用 `writeJson`更新Json值 :
+
+```java
+Object result1 = objectPointer.queryJson(jsonObject);
+// Query a JsonArray
+Object result2 = arrayPointer.queryJson(jsonArray);
+// Write starting from a JsonObject
+objectPointer.writeJson(jsonObject, "new element");
+// Write starting from a JsonObject
+arrayPointer.writeJson(jsonArray, "new element");
+```
+
+你可以通过实现 `JsonPointerIterator` ，创建任何对象模型的Vert.x Json Pointer。
+
+# Buffers
+
+Vert.x中大量使用buffers传输数据。
+
+buffer是一个可以读写的字节序列，超出其容量时，它会自动扩展。可以将其看成一个智能的字节数组。 
+
+## 创建buffers
+
+可以使用静态方法 `Buffer.buffer`创建buffers。
+
+buffer可以由字符串或字节数组初始化，当然，空的buffer也是允许的。
+
+ 下面是一些创建buffer的例子: 
+
+创建一个新的空buffer：
+
+```java
+Buffer buff = Buffer.buffer();
+```
+
+ 从字符串创建一个buffer。该字符串将在buffer中使用UTF-8编码。 
+
+```java
+Buffer buff = Buffer.buffer("some string");
+```
+
+ 从一个字符串创建一个缓冲区:该字符串将使用指定的编码方式进行编码，例如: 
+
+```java
+Buffer buff = Buffer.buffer("some string", "UTF-16");
+```
+
+ 从一个字节数组创建一个buffer
+
+```java
+byte[] bytes = new byte[] {1, 3, 5};
+Buffer buff = Buffer.buffer(bytes);
+```
+
+ 创建一个带有初始大小提示的buffer。  如果你知道将会有多少数据待写入，可以在创建buffer时指定buffer的尺寸。这样buffer创建时就会分配这么多内存，这在效率上要优过边写入边扩容。 
+
+ 注意，这样创建的buffer仍然是**空的(empty)**。创建时并不会有0填充于其中。 
+
+```java
+Buffer buff = Buffer.buffer(10000);
+```
+
+## 写buffer
+
+写入buffer有两种方式：附加(appending)、随机存取(random access)。这两种方式下，buffer都会自动扩容。不会产生**IndexOutOfBoundsException **异常。
+
+### 向buffer中追加数据
+
+往buffer上附加信息，可以使用**appendXXX **系列方法。有适合各种类型的append方法。
+
+append系列方法的返回值就是buffer本身，所以适用链式写法：
+
+```java
+Buffer buff = Buffer.buffer();
+
+buff.appendInt(123).appendString("hello\n");
+
+socket.write(buff);
+```
+
+### Random access buffer writes
+
+你也可以通过一系列**setXXX **方法在指定的索引处写入数据。set系列方法的第一个参数都是索引值。
+
+buffer会自动扩容的。
+
+```java
+Buffer buff = Buffer.buffer();
+
+buff.setInt(1000, 123);
+buff.setString(0, "hello");
+```
+
+### 从buffer中读取
+
+ **getXXX **系列方法用来从buffer中读取数据。get系列方法的第一个参数也是指示从哪开始读的索引值。 
+
+```java
+Buffer buff = Buffer.buffer();
+for (int i = 0; i < buff.length(); i += 4) {
+  System.out.println("int value at " + i + " is " + buff.getInt(i));
+}
+```
+
+### 处理无符号数
+
+可以使用**getUnsignedXXX、appendUnsignedXXX、setUnsignedXXX **系列方法读写buffer。当你在为网络协议实现编解码器时，如果想将带宽消耗优化到极致，这个特性能帮上忙。
+
+下面这个例子里，使用一个字节在指定位置写入200：
+
+```java
+Buffer buff = Buffer.buffer(128);
+int pos = 15;
+buff.setUnsignedByte(pos, (short) 200);
+System.out.println(buff.getUnsignedByte(pos));
+```
+
+ 控制台将显示‘200’。 
+
+### buffer的长度
+
+ [length](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/buffer/Buffer.html#length--)方法可以获得buffer的长度。buffer的长度是最大的索引值+1。 
+
+### 复制buffer
+
+ 使用[copy](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/buffer/Buffer.html#copy--)方法。 
+
+### 将buffer分片（slicing buffers）
+
+ [slice](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/buffer/Buffer.html#slice--)方法用来将buffer分片，切分出来的新buffer与原buffer共享缓存区。 
+
+### buffer重用
+
+ 在buffer被写入socket或类似地方后，它就不能再被使用了。 
+
+# 编写TCP服务端和客户端
+
+Vert.x提供轻松编写非阻塞的TCP客户端和服务器端的方式。
+
+## 创建TCP服务器
+
+ 创建TCP 服务器最简单的方式是像下面这样，使用缺省选项： 
+
+```java
+NetServer server = vertx.createNetServer();
+```
+
+## 配置TCP服务器端
+
+ 不使用缺省选项时，可以在创建时传入[NetServerOptions](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetServerOptions.html)对象： 
+
+```java
+NetServerOptions options = new NetServerOptions().setPort(4321);
+NetServer server = vertx.createNetServer(options);
+```
+
+## 服务器启动监听
+
+ 选择[listen](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetServer.html#listen--)方法中的一个，可以让服务器监听传入的请求。 
+
+ 让服务器监听选项中指定的端口和主机地址： 
+
+```java
+NetServer server = vertx.createNetServer();
+server.listen();
+```
+
+ 或者在方法调用时指定端口和主机，这将忽略配置项： 
+
+```java
+NetServer server = vertx.createNetServer();
+server.listen(1234, "localhost");
+```
+
+ 缺省主机地址是`0.0.0.0`，其意义是在所有可用的地址上进行监听；缺省端口是`0`，这是一个特殊的值，它会指示服务器随机寻找一个可用的本地端口来使用。 
+
+实际的绑定是异步发生的。所以有可能在listen方法调用返回**之后**，服务器才开始监听。
+
+如果想得到监听开始的通知，可以在调用listen方法时提供一个handler供回调执行：
+
+```java
+NetServer server = vertx.createNetServer();
+server.listen(1234, "localhost", res -> {
+  if (res.succeeded()) {
+    System.out.println("Server is now listening!");
+  } else {
+    System.out.println("Failed to bind!");
+  }
+});
+```
+
+## 监听一个随机的端口
+
+如果监听端口被设置为0，服务器将随机寻找一个端口。
+
+想知道服务器实际监听的端口，可以调用[actualPort](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetServer.html#actualPort--)方法。
+
+```java
+NetServer server = vertx.createNetServer();
+server.listen(0, "localhost", res -> {
+  if (res.succeeded()) {
+    System.out.println("Server is now listening on actual port: " + server.actualPort());
+  } else {
+    System.out.println("Failed to bind!");
+  }
+});
+```
+
+## 获取请求
+
+ 想在链接产生时收到通知，需要设置[connectHandler](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetServer.html#connectHandler-io.vertx.core.Handler-)： 
+
+```java
+NetServer server = vertx.createNetServer();
+server.connectHandler(socket -> {
+  // Handle the connection in here
+});
+```
+
+链接产生时，这个handler将被调用，参数是[NetSocket](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html)的实例。
+
+NetSocket是对实际链接的一个类socket的接口(socket-like interface)，你可以读写数据，也可以关闭socket。
+
+## 从socket中读取数据
+
+要从socket读数据，只需在socket上设置[handler](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#handler-io.vertx.core.Handler-)。
+
+这样每次socket收到数据时，将会给传入一个buffer并调用handler。
+
+```java
+NetServer server = vertx.createNetServer();
+server.connectHandler(socket -> {
+  socket.handler(buffer -> {
+    System.out.println("I received some bytes: " + buffer.length());
+  });
+});
+```
+
+## 向socket中写数据
+
+ [write](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#write-io.vertx.core.buffer.Buffer-)方法用来写入数据。 
+
+```java
+Buffer buffer = Buffer.buffer().appendFloat(12.34f).appendInt(123);
+socket.write(buffer);
+
+// Write a string in UTF-8 encoding
+socket.write("some data");
+
+// Write a string using the specified encoding
+socket.write("some data", "UTF-16");
+```
+
+ 写操作是异步的，可能在对写的调用返回后一段时间才会发生。 
+
+## 关闭handler（Closed handler）
+
+ 要在socket关闭时得到通知，可以设置一个[closeHandler](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#closeHandler-io.vertx.core.Handler-)： 
+
+```java
+socket.closeHandler(v -> {
+  System.out.println("The socket has been closed");
+});
+```
+
+## 处理异常
+
+ 可以设置一个[exceptionHandler](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#exceptionHandler-io.vertx.core.Handler-)来捕获socket上发生的异常。 
+
+您可以设置一个 `exceptionHandler`接收连接传递到connectHandler之前发生的任何异常，例如在TLS握手过程中。
+
+## 消息总线写入handler
+
+socket会在event bus上自动注册一个handler，这个handler会在收到buffer时将其写入socket。
+
+这样你可以在不同的verticle里、甚至是不同的Vert.x实例里发送buffer到这个地址，而这些数据将被写入socket。
+
+这个handler的地址可以用[writeHandlerID](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#writeHandlerID--)方法获得。
+
+## 本地和远程地址
+
+[NetSocket](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html)的本地地址用[localAddress](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#localAddress--)方法获取。
+
+远程地址(即，链接另一端的地址)，可以用[remoteAddress](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#remoteAddress--)方法获取。
+
+## 发送文件或类路径里的资源
+
+[sendFile](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#sendFile-java.lang.String-)方法可以将文件或类路径里的资源直接写入socket。因为其可以借助操作系统内核支持的操作来完成，所以这是一种很有效的发送文件的方式。
+
+请参阅本章，可以了解关于[serving files from the classpath ](https://link.jianshu.com?t=http://vertx.io/docs/vertx-core/java/#classpath)的限制或者关闭这个特性。
+
+```java
+socket.sendFile("myfile.dat");
+```
+
+## Streaming sockets
+
+[NetSocket](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html)的实例也是[ReadStream](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/streams/ReadStream.html)和[WriteStream](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/streams/ReadStream.html)的实例，所以它们可以用于pump data(指将数据转发出去)或从其他流读写数据。
+
+更多细节请参阅[ streams and pumps](https://link.jianshu.com?t=http://vertx.io/docs/vertx-core/java/#streams)。
+
+## 升级连接到SSL/TLS
+
+可以使用[upgradeToSsl](https://link.jianshu.com/?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html#upgradeToSsl-io.vertx.core.Handler-)方法将一个非SSL/TLS的链接升级。
+
+要使这个特性正常工作，服务器/客户端需要配置安全选项。请参阅[SSL/TLS这一节](https://link.jianshu.com/?t=http://vertx.io/docs/vertx-core/java/#ssl)获取更多细节。
+
+## 关闭TCP服务器
+
+调用[close](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetServer.html#close--)方法可以关闭服务器。关闭服务器时，将会关闭所有打开的链接，并释放所有的服务器资源。
+
+关闭也是异步的，所以close方法返回时关闭可能还没结束。若要在关闭完成时得到通知，需传入一个handler。
+
+```java
+server.close(res -> {
+  if (res.succeeded()) {
+    System.out.println("Server is now closed");
+  } else {
+    System.out.println("close failed");
+  }
+});
+```
+
+## verticles的自动清理
+
+ 如果你是在verticle内部创建的TCP 服务器或客户端，那当verticle被卸载时，它们将被自动关闭。 
+
+## 扩展-共享（Scaling-sharing）TCP服务器
+
+TCP 服务器的handlers将一直在同一个event loop线程上执行。
+
+这意味着如果在一个多核机器上运行时，只有一个实例被部署，你无法从多核中获得任何多余的好处。
+
+为了利用到机器上的更多cpu核心，你需要部署你的TCP 服务器的多个实例。
+
+可以通过编程的方式实例化多个实例：
+
+```java
+for (int i = 0; i < 10; i++) {
+  NetServer server = vertx.createNetServer();
+  server.connectHandler(socket -> {
+    socket.handler(buffer -> {
+      // Just echo back the data
+      socket.write(buffer);
+    });
+  });
+  server.listen(1234, "localhost");
+}
+```
+
+或者，如果你使用了verticle，只需要部署你的服务器verticle的多个实例即可。可以在命令行里加上`-instance`选项：
+ `vertx run com.mycompany.MyVerticle -instances 10`
+
+再或者，以编程方式部署你的verticle：
+
+```java
+DeploymentOptions options = new DeploymentOptions().setInstances(10);
+vertx.deployVerticle("com.mycompany.MyVerticle", options);
+```
+
+一旦你这么做了，你会发现服务器功能如以前一样没变，但它利用上了多核资源，可以做更多事。
+
+这时候，你也许会问：**“一台主机的确定端口，怎么能有多个服务器监听呢？部署多个实例难道不会造成端口冲突吗？”**
+
+*Vert.x在这里耍了点小花招*。*
+
+当你在同一个端口部署另一个服务器时，其实并没有真的创建一个新服务器监听这个端口。
+
+相反，内部其实只维护了一个服务器，但是链接传入时，会用轮询的方式将链接分发给任意的connect handler。
+
+因此，Vert.x的TCP 服务器可以在单线程的情况下，扩展到多个可用的cpu核心。
+
+## 创建客户端
+
+ 创建TCP客户端也和服务器类似： 
+
+```java
+NetClient client = vertx.createNetClient();
+```
+
+## 配置TCP客户端
+
+如果你不想要默认值，客户端可以通过传入一个 `NetClientOptions`  实例创建时:
+
+```java
+NetClientOptions options = new NetClientOptions().setConnectTimeout(10000);
+NetClient client = vertx.createNetClient(options);
+```
+
+## 建立链接
+
+指定了服务器的port和host后，可以使用[connect](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetClient.html#connect-int-java.lang.String-io.vertx.core.Handler-)方法创建到服务器的链接。之后handler将被调用，当链接成功创建，传入的参数会包含一个[NetSocket](https://link.jianshu.com?t=http://vertx.io/docs/apidocs/io/vertx/core/net/NetSocket.html)；如果创建失败，传入的参数将包含失败对象。
+
+```java
+NetClientOptions options = new NetClientOptions().setConnectTimeout(10000);
+NetClient client = vertx.createNetClient(options);
+client.connect(4321, "localhost", res -> {
+  if (res.succeeded()) {
+    System.out.println("Connected!");
+    NetSocket socket = res.result();
+  } else {
+    System.out.println("Failed to connect: " + res.cause().getMessage());
+  }
+});
+```
 
 
 
