@@ -33,7 +33,7 @@ public class CodeMakerDao implements InitializingBean {
             String basseName = url1.substring(t + 1);
             this.dataBaseName = basseName;
         }
-        log.info("数据库名称：" + this.dataBaseName);
+        log.info("database name：" + this.dataBaseName);
     }
 
     public List<ColumnDTO> queryColumnsByTableName(String tableName) {

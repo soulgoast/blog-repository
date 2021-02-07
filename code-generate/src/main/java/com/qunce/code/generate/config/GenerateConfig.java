@@ -14,7 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @Accessors(chain = true)
 public class GenerateConfig {
 
-    @Value("{$generate.config}")
+    @Value("${generate.generateAddress}")
+    private String generateAddress;
+
+    @Value("${generate.package}")
     private String packageName;
+
+
 
 }

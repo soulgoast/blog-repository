@@ -14,8 +14,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class FieldDto implements Serializable {
     private static final long serialVersionUID = 3025757740198998100L;
-    private String fieldName;        //字段名称
-    private String fieldType;        //字段类型
+    private String name;        //字段名称
+    private String type;        //字段类型
     private String fieldComment;    //字段注释
     private String fieldLength;        //字段长度
     private String fieldDbName;        //字段对应数据列名称

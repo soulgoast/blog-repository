@@ -11,12 +11,12 @@ import java.util.Objects;
 */
 @Data
 @Accessors(chain = true)
-public class ${className}DTO implements Serializable {
+public class ${className} implements Serializable {
 
 
 <#list fields as field>
 
-private  ${field.type} ${field.name};
+private ${field.type} ${field.name};
 
 </#list>
 

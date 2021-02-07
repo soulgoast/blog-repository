@@ -28,7 +28,6 @@ public class GenerateCommand implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        initConfig();
         List<TableDTO> tablesList = codeService.findTablesList();
         if (CollectionUtils.isEmpty(tablesList)) {
             return;
@@ -37,11 +36,5 @@ public class GenerateCommand implements CommandLineRunner {
         codeService.generateProcess(tablesList);
     }
 
-    private void initConfig() {
-        try {
 
-        } catch (Exception e) {
-            throw new RuntimeException("读取模板文件异常", e);
-        }
-    }
 }

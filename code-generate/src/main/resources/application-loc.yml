@@ -38,3 +38,4 @@ tgs:
 
 generate:
   package: com.qunce
+  generateAddress: F:\code

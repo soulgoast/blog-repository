@@ -25,19 +25,19 @@ public class ColumnUtils {
 	public static String convertFieldType(String columnType, String precision, String scale)
 	{
 		if (columnType.contains("char"))
-			columnType = "java.lang.String";
+			columnType = "String";
 		else
 		if (columnType.equals("int"))
-			columnType = "java.lang.Integer";
+			columnType = "Integer";
 		else
 			if (columnType.equals("bigint"))
-				columnType = "java.lang.Long";
+				columnType = "Long";
 		else
 		if (columnType.contains("float"))
-			columnType = "java.lang.Float";
+			columnType = "Float";
 		else
 		if (columnType.contains("double"))
-			columnType = "java.lang.Double";
+			columnType = "Double";
 		else
 		if (columnType.contains("number"))
 		{
@@ -45,9 +45,9 @@ public class ColumnUtils {
 				columnType = "java.math.BigDecimal";
 			else
 			if (StringUtils.isNotBlank(precision) && Integer.parseInt(precision) > 10)
-				columnType = "java.lang.Long";
+				columnType = "Long";
 			else
-				columnType = "java.lang.Long";
+				columnType = "Long";
 		} else
 		if (columnType.contains("decimal"))
 			columnType = "BigDecimal";
@@ -63,12 +63,12 @@ public class ColumnUtils {
 		else
 		if (columnType.contains("clob"))
 			//columnType = "java.sql.Clob";
-			columnType = "java.lang.String";
+			columnType = "String";
 		else
 		if (columnType.contains("numeric"))
 			columnType = "BigDecimal";
 		else
-			columnType = "java.lang.String";
+			columnType = "String";
 		return columnType;
 	}
 	public static String convertDbType(String columnType, Long collength) {
