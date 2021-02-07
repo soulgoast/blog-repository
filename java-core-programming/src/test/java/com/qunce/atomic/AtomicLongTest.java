@@ -1,9 +1,14 @@
 package com.qunce.atomic;
 
+import lombok.Data;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongUnaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * @Description TODO
@@ -85,5 +90,20 @@ public class AtomicLongTest {
         int b;
         int a = 10 - (b = 2);
         System.out.println(a);
+    }
+
+    public static void main(String[] args) {
+        List<CategorypropDailySticDTO> wList = new ArrayList<>();
+        Map<Long, List<CategorypropDailySticDTO>> wCateMapLst = wList.stream().collect(Collectors.groupingBy(CategorypropDailySticDTO::getCategoryId));
+        for(Long id : wCateMapLst.keySet()) {
+            if (wCateMapLst.get(id) == null) {
+                continue;
+            }
+        }
+    }
+
+    @Data
+    class CategorypropDailySticDTO{
+        private Long categoryId;
     }
 }
