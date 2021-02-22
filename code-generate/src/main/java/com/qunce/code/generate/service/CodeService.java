@@ -7,6 +7,7 @@ import com.qunce.code.generate.service.dto.FieldDto;
 import com.qunce.code.generate.service.dto.ProjectInfoDTO;
 import com.qunce.code.generate.service.dto.TableDTO;
 import com.qunce.code.generate.utils.ColumnUtils;
+import com.qunce.code.generate.utils.DatabaseDesignUtils;
 import com.qunce.code.generate.utils.ObjStrUtls;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -43,28 +44,65 @@ public class CodeService {
         return  codeMakerDao.queryTableName();
     }
 
-
     public void generateProcess(List<TableDTO> tablesList) {
-        tablesList.stream().map(TableDTO::getTabNam).forEach(name -> {
+
+        Map<String, Object> dataMap = new HashMap<>();
+
+        List<Map<String, Object>> newsList=new ArrayList<>();
+
+        dataMap.put("tableList",newsList);
+
+        tablesList.stream().forEach(table -> {
             ProjectInfoDTO projectInfoDTO = new ProjectInfoDTO();
-            projectInfoDTO.setTableName(name);
-            String objNam = ObjStrUtls.getObjNam(name);
+            projectInfoDTO.setTableName(table.getTabNam());
+            projectInfoDTO.setTableNameCn(table.getComment());
+            String objNam = ObjStrUtls.getObjNam(table.getTabNam());
             String objCNam = ObjStrUtls.getObjCNam(objNam);
             projectInfoDTO.setObjectName(objCNam);
-            this.generateProcess(projectInfoDTO);
+            List<FieldDto> fieldDtos = this.generateProcess(projectInfoDTO);
+
+            Map<String, Object> map=new HashMap<>();
+            map.put("tableNameCn", table.getComment());
+            map.put("tableNameEn", table.getTabNam());
+            List<Map<String, String>> columnList = new ArrayList<>();
+            for (FieldDto fieldDto : fieldDtos) {
+                String name = fieldDto.getName();
+                String fieldComment = fieldDto.getFieldComment();
+                String type = fieldDto.getType();
+                String fieldConstraint = fieldDto.getFieldConstraint();
+                Map<String, String> stringMap = new HashMap<>();
+                stringMap.put("columnNameEn", name);
+                stringMap.put("columnNamnCn", fieldComment);
+                stringMap.put("type", type);
+                stringMap.put("isNull", fieldConstraint);
+                stringMap.put("comment", fieldComment);
+                columnList.add(stringMap);
+            }
+
+            map.put("columnList", columnList);
+            newsList.add(map);
         });
+
+        //文件唯一名称
+        String fileOnlyName = "用freemarker导出的Word文档_" + ".doc";
+
+        /** 生成word */
+        DatabaseDesignUtils.createWord(dataMap, "table.ftl", generateConfig.getGenerateAddress(), fileOnlyName);
     }
 
-    public void generateProcess(ProjectInfoDTO projectInfo) {
+    public List<FieldDto> generateProcess(ProjectInfoDTO projectInfo) {
         List<FieldDto> fieldDtos = retrieveFieldsByTablename(projectInfo.getTableName());
         fieldDtos.stream().map(FieldDto::toString).forEach(log::debug);
         Map<String, Object> map = new HashMap<>();
+        map.put("tableName", projectInfo.getTableName());
         map.put("fields", fieldDtos);
         map.put("projectModel", generateConfig.getPackageName());
         map.put("DtoDesc", "DtoDesc");
         map.put("className", projectInfo.getObjectName());
+        map.put("serUid","1L");
 
         generateEntity("domain", projectInfo.getObjectName(), map);
+        return fieldDtos;
 
     }
 
@@ -185,6 +223,9 @@ public class CodeService {
         List<ColumnDTO> columnDTOList = codeMakerDao.queryColumnsByTableName(tableName);
         if(columnDTOList != null) {
             for(ColumnDTO column : columnDTOList) {
+                if ("id".equals(column.getColumnName().toLowerCase())) {
+                    continue; //排除主键
+                }
                 FieldDto fDto = new FieldDto();
                 fDto.setName(ColumnUtils.formatField(column.getColumnName()));
                 fDto.setFieldDbName(column.getColumnName());
@@ -198,7 +239,7 @@ public class CodeService {
                 fDto.setFieldPrecision(String.valueOf(column.getColumnPrecision()));
                 fDto.setFieldScale(String.valueOf(column.getColumnScale()));
                 fDto.setType(ColumnUtils.convertFieldType(column.getColumnType().toLowerCase(), String.valueOf(column.getColumnPrecision()), String.valueOf(column.getColumnScale())));
-
+                fDto.setFieldConstraint(column.getColumnConstraint());
                 fieldList.add(fDto);
             }
         }

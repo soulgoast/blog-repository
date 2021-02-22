@@ -9,36 +9,27 @@ import java.util.Objects;
 /**
 * ${DtoDesc}
 */
+@Entity
+@Table(name = "${tableName}")
 @Data
 @Accessors(chain = true)
+@Where(clause = "del_flag='" + Constants.DEL_FLAG_NORMAL + "'")
+@SQLDelete(sql = "update ${tableName} set del_flag='"
++ Constants.DEL_FLAG_DELETED + "',update_time=now() where id=?")
+@SQLDeleteAll(sql = "update ${tableName} set del_flag='"
++ Constants.DEL_FLAG_DELETED + "',update_time=now() where id=?")
 public class ${className} implements Serializable {
 
+    private static final long serialVersionUID = ${serUid};
 
-<#list fields as field>
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-private ${field.type} ${field.name};
+    <#list fields as field>
+    @Column(name="${field.fieldDbName}", columnDefinition="${field.type} comment '${field.fieldComment}'")
+    private ${field.type} ${field.name};
 
-</#list>
-
-@Override
-public boolean equals(Object o) {
-if (this == o) {
-return true;
-}
-if (o == null || getClass() != o.getClass()) {
-return false;
-}
-
-${className}DTO dto = (${className}DTO) o;
-if (dto.getId() == null || getId() == null) {
-return false;
-}
-return Objects.equals(getId(), dto.getId());
-}
-
-@Override
-public int hashCode() {
-return Objects.hashCode(getId());
-}
+    </#list>
 
 }

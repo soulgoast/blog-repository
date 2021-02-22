@@ -12,4 +12,6 @@ import lombok.experimental.Accessors;
 public class TableDTO {
 
     private String tabNam;
+
+    private String comment;
 }

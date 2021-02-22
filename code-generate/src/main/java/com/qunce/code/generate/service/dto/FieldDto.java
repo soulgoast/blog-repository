@@ -17,6 +17,7 @@ public class FieldDto implements Serializable {
     private String name;        //字段名称
     private String type;        //字段类型
     private String fieldComment;    //字段注释
+    private String fieldConstraint;    //字段约束
     private String fieldLength;        //字段长度
     private String fieldDbName;        //字段对应数据列名称
     private String fieldDbType;        //字段对应数据列名称

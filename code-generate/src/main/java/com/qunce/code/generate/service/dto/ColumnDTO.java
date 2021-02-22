@@ -22,5 +22,6 @@ public class ColumnDTO implements Serializable {
     private Long columnScale;
 
     private String columnComment;
+    private String columnConstraint;
 
 }

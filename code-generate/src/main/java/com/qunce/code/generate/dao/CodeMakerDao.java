@@ -39,7 +39,7 @@ public class CodeMakerDao implements InitializingBean {
     public List<ColumnDTO> queryColumnsByTableName(String tableName) {
         String sql = "SELECT  COLUMN_NAME as 'columnName',COLUMN_COMMENT as 'columnComment' , "
                 + "DATA_TYPE as 'columnType',CHARACTER_MAXIMUM_LENGTH as 'columnLength', "
-                + "NUMERIC_PRECISION as 'columnPrecision',NUMERIC_SCALE AS 'columnScale' "
+                + "NUMERIC_PRECISION as 'columnPrecision',NUMERIC_SCALE AS 'columnScale', IS_NULLABLE AS 'columnConstraint' "
                 + "FROM information_schema.`COLUMNS` where TABLE_NAME = ? and TABLE_SCHEMA = ?";
 
         return mysqlDao.findSqlWithNativeSql(sql, ColumnDTO.class,new Object[] { tableName, dataBaseName });
@@ -55,7 +55,7 @@ public class CodeMakerDao implements InitializingBean {
     }
 
     public List<TableDTO> queryTableName() {
-        String sql = "SELECT TABLE_NAME AS tabNam from information_schema.TABLES t " +
+        String sql = "SELECT TABLE_NAME AS tabNam, TABLE_COMMENT AS 'comment' from information_schema.TABLES t " +
                 " where t.TABLE_SCHEMA = '" + dataBaseName + "'" ;
         return mysqlDao.findSqlWithNativeSql(sql,TableDTO.class,new Object[] { });
     }

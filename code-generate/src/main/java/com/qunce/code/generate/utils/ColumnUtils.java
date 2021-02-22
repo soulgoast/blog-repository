@@ -53,10 +53,10 @@ public class ColumnUtils {
 			columnType = "BigDecimal";
 		else
 		if (columnType.contains("date"))
-			columnType = "java.time.Instant";
+			columnType = "Instant";
 		else
 		if (columnType.contains("time"))
-			columnType = "java.time.Instant";
+			columnType = "Instant";
 		else
 		if (columnType.contains("blob"))
 			columnType = "byte[]";
