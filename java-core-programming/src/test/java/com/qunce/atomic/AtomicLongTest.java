@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongUnaryOperator;
 import java.util.stream.Collectors;
@@ -105,5 +106,13 @@ public class AtomicLongTest {
     @Data
     class CategorypropDailySticDTO{
         private Long categoryId;
+    }
+
+    @Test
+    public void test04() {
+        AtomicInteger atomicInteger = new AtomicInteger(10);
+        int i = atomicInteger.getAndIncrement();
+        System.out.println(i);
+        System.out.println(atomicInteger.get());
     }
 }

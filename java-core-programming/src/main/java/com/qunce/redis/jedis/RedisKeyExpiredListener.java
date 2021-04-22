@@ -60,7 +60,7 @@ public class RedisKeyExpiredListener extends JedisPubSub {
         hostAndPortSet.add(hostAndPort5);
         hostAndPortSet.add(hostAndPort6);
         JedisCluster jedis = new JedisCluster(hostAndPortSet);
-        jedis.psubscribe(new RedisKeyExpiredListener(), "__keyevent@0__:expired");
+        jedis.psubscribe(new RedisKeyExpiredListener(), "__keyevent@*__:expired");
     }
 
     @Test
@@ -74,9 +74,7 @@ public class RedisKeyExpiredListener extends JedisPubSub {
         Set<HostAndPort> hostAndPortSet = new HashSet<>();
         hostAndPortSet.add(hostAndPort);
         JedisCluster jedis = new JedisCluster(hostAndPortSet);
-
-        jedis.set("notify", "你还在吗");
-        jedis.expire("notify", 1);
+        jedis.setex("aaa", 3, "bb");
 /*        jedis.set("wh01%dev01%status", "在线");
         jedis.set("wh01%dev01%message", "{status:success}");
         jedis.set("wh01%dev01%msgTime", "2020-05-20 11:31:12");*/

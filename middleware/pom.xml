@@ -176,9 +176,14 @@
         <module>springboot/redis</module>
         <module>spring/spring-data-influxdb</module>
         <module>vert.x/core</module>
+        <module>vert.x/web</module>
         <module>vert.x/sql-client-templates</module>
         <module>vert.x/vertx-pg-client</module>
         <module>template</module>
+        <module>spring/webflux</module>
+        <module>vert.x/mqtt-server</module>
+        <module>vert.x/web</module>
+        <module>pulsar</module>
     </modules>
 
     <properties>
@@ -355,112 +360,9 @@
                 <artifactId>spring-boot-starter-quartz</artifactId>
             </dependency>
         </dependencies>
-
-
-
     </dependencyManagement>
     <!--构建项目需要的信息-->
     <build>
-        <!--该元素设置了项目源码目录，当构建项目的时候，构建系统会编译目录里的源码。该路径是相对于pom.xml的相对路径。-->
-        <!--<sourceDirectory>-->
-        <!--该元素设置了项目脚本源码目录，该目录和源码目录不同：绝大多数情况下，该目录下的内容 会被拷贝到输出目录(因为脚本是被解释的，而不是被编译的)。-->
-        <!--<scriptSourceDirectory/>-->
-        <!--该元素设置了项目单元测试使用的源码目录，当测试项目的时候，构建系统会编译目录里的源码。该路径是相对于pom.xml的相对路径。-->
-        <!--<testSourceDirectory/>-->
-        <!--被编译过的应用程序class文件存放的目录。-->
-        <!--<outputDirectory/>-->
-        <!--被编译过的测试class文件存放的目录。-->
-        <!--<testOutputDirectory/>-->
-        <!--使用来自该项目的一系列构建扩展-->
-        <!--<extensions>-->
-            <!--描述使用到的构建扩展。-->
-            <!--<extension>-->
-                <!--构建扩展的groupId-->
-                <!--<groupId/>-->
-                <!--构建扩展的artifactId-->
-                <!--<artifactId/>-->
-                <!--构建扩展的版本-->
-                <!--<version/>-->
-            <!--</extension>-->
-        <!--</extensions>-->
-        <!--当项目没有规定目标（Maven2 叫做阶段）时的默认值-->
-        <!--<defaultGoal/>-->
-        <!--这个元素描述了项目相关的所有资源路径列表，例如和项目相关的属性文件，这些资源被包含在最终的打包文件里。-->
-        <resources>
-            <!--这个元素描述了项目相关或测试相关的所有资源路径-->
-            <resource>
-                <!-- 描述了资源的目标路径。该路径相对target/classes目录（例如${project.build.outputDirectory}）。举个例 子，如果你想资源在特定的包里(org.apache.maven.messages)，你就必须该元素设置为org/apache/maven /messages。然而，如果你只是想把资源放到源码目录结构里，就不需要该配置。-->
-                <!--<targetPath/>-->
-                <!--是否使用参数值代替参数名。参数值取自properties元素或者文件里配置的属性，文件在filters元素里列出。-->
-                <!--<filtering/>-->
-                <!--描述存放资源的目录，该路径相对POM路径-->
-                <!--<directory/>-->
-                <!--包含的模式列表，例如**/*.xml.-->
-                <includes/>
-                <!--排除的模式列表，例如**/*.xml-->
-                <excludes/>
-            </resource>
-        </resources>
-        <!--这个元素描述了单元测试相关的所有资源路径，例如和单元测试相关的属性文件。-->
-        <testResources>
-            <!--这个元素描述了测试相关的所有资源路径，参见build/resources/resource元素的说明-->
-            <testResource>
-                <!--<targetPath/>-->
-                <!--<filtering/>-->
-                <!--<directory/>-->
-                <includes/>
-                <excludes/>
-            </testResource>
-        </testResources>
-        <!--构建产生的所有文件存放的目录-->
-        <!--<directory/>-->
-        <!--产生的构件的文件名，默认值是${artifactId}-${version}。-->
-        <!--<finalName/>-->
-        <!--当filtering开关打开时，使用到的过滤器属性文件列表-->
-        <filters/>
-        <!--子项目可以引用的默认插件信息。该插件配置项直到被引用时才会被解析或绑定到生命周期。给定插件的任何本地配置都会覆盖这里的配置-->
- <!--       <pluginManagement>
-            &lt;!&ndash;使用的插件列表 。&ndash;&gt;
-            <plugins>
-                &lt;!&ndash;plugin元素包含描述插件所需要的信息。&ndash;&gt;
-                <plugin>
-                    &lt;!&ndash;插件在仓库里的group ID&ndash;&gt;
-                    &lt;!&ndash;<groupId/>&ndash;&gt;
-                    &lt;!&ndash;插件在仓库里的artifact ID&ndash;&gt;
-                    &lt;!&ndash;<artifactId/>&ndash;&gt;
-                    &lt;!&ndash;被使用的插件的版本（或版本范围）&ndash;&gt;
-                    <version/>
-                    &lt;!&ndash;是否从该插件下载Maven扩展（例如打包和类型处理器），由于性能原因，只有在真需要下载时，该元素才被设置成enabled。&ndash;&gt;
-                    <extensions/>
-                    &lt;!&ndash;在构建生命周期中执行一组目标的配置。每个目标可能有不同的配置。&ndash;&gt;
-                    <executions>
-                        &lt;!&ndash;execution元素包含了插件执行需要的信息&ndash;&gt;
-                        <execution>
-                            &lt;!&ndash;执行目标的标识符，用于标识构建过程中的目标，或者匹配继承过程中需要合并的执行目标&ndash;&gt;
-                            &lt;!&ndash;<id/>&ndash;&gt;
-                            &lt;!&ndash;绑定了目标的构建生命周期阶段，如果省略，目标会被绑定到源数据里配置的默认阶段&ndash;&gt;
-                            <phase/>
-                            &lt;!&ndash;配置的执行目标&ndash;&gt;
-                            <goals/>
-                            &lt;!&ndash;配置是否被传播到子POM&ndash;&gt;
-                            <inherited/>
-                            &lt;!&ndash;作为DOM对象的配置&ndash;&gt;
-                            <configuration/>
-                        </execution>
-                    </executions>
-                    &lt;!&ndash;项目引入插件所需要的额外依赖&ndash;&gt;
-                    <dependencies>
-                        &lt;!&ndash;参见dependencies/dependency元素&ndash;&gt;
-                        <dependency>......</dependency>
-                    </dependencies>
-                    &lt;!&ndash;任何配置是否被传播到子项目&ndash;&gt;
-                    <inherited/>
-                    &lt;!&ndash;作为DOM对象的配置&ndash;&gt;
-                    <configuration/>
-                </plugin>
-            </plugins>
-        </pluginManagement>-->
-        <!--使用的插件列表-->
         <plugins>
             <!-- Tell maven to compile using Java 8 -->
             <plugin>
@@ -472,61 +374,8 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!--参见build/pluginManagement/plugins/plugin元素-->
-<!--            <plugin>
-                <groupId/>
-                <artifactId/>
-                <version/>
-                <extensions/>
-                <executions>
-                    <execution>
-                        <id/>
-                        <phase/>
-                        <goals/>
-                        <inherited/>
-                        <configuration/>
-                    </execution>
-                </executions>
-                <dependencies>
-                    &lt;!&ndash;参见dependencies/dependency元素&ndash;&gt;
-                    <dependency>......</dependency>
-                </dependencies>
-                <goals/>
-                <inherited/>
-                <configuration/>
-            </plugin>-->
         </plugins>
     </build>
-    <!--发现依赖和扩展的远程仓库列表。-->
-    <repositories>
-        <!--包含需要连接到远程仓库的信息-->
-        <repository>
-            <!--如何处理远程仓库里发布版本的下载-->
-<!--            <releases>
-                &lt;!&ndash;true或者false表示该仓库是否为下载某种类型构件（发布版，快照版）开启。 &ndash;&gt;
-                <enabled/>
-                &lt;!&ndash;该元素指定更新发生的频率。Maven会比较本地POM和远程POM的时间戳。这里的选项是：always（一直），daily（默认，每日），interval：X（这里X是以分钟为单位的时间间隔），或者never（从不）。&ndash;&gt;
-                <updatePolicy/>
-                &lt;!&ndash;当Maven验证构件校验文件失败时该怎么做：ignore（忽略），fail（失败），或者warn（警告）。&ndash;&gt;
-                &lt;!&ndash;<checksumPolicy/>&ndash;&gt;
-            </releases>-->
-            <!-- 如何处理远程仓库里快照版本的下载。有了releases和snapshots这两组配置，POM就可以在每个单独的仓库中，为每种类型的构件采取不同的 策略。例如，可能有人会决定只为开发目的开启对快照版本下载的支持。参见repositories/repository/releases元素 -->
-<!--            <snapshots>
-                <enabled/>
-                <updatePolicy/>
-                <checksumPolicy/>
-            </snapshots>-->
-            <!--远程仓库唯一标识符。可以用来匹配在settings.xml文件里配置的远程仓库-->
-            <id>banseon-repository-proxy</id>
-            <!--远程仓库名称-->
-            <name>banseon-repository-proxy</name>
-            <!--远程仓库URL，按protocol://hostname/path形式-->
-            <url>http://192.168.1.169:9999/repository/</url>
-            <!-- 用于定位和排序构件的仓库布局类型-可以是default（默认）或者legacy（遗留）。Maven 2为其仓库提供了一个默认的布局；然 而，Maven 1.x有一种不同的布局。我们可以使用该元素指定布局是default（默认）还是legacy（遗留）。-->
-            <layout>default</layout>
-        </repository>
-    </repositories>
-
     <!--发现插件的远程仓库列表，这些插件用于构建和报表-->
     <pluginRepositories>
         <!--包含需要连接到远程插件仓库的信息.参见repositories/repository元素-->
