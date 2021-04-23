@@ -22,12 +22,14 @@ public class UserDefineSocketClient {
 //        String host = "10.8.40.225";
         // String host = "10.8.15.191";
         //String host = "113.57.110.196";
-        // String host = "10.8.11.66";
+        //String host = "10.8.11.66";
         //String host = "10.8.15.172";
+        int port = 31552;
+        // int port = 4321;
 
         NetClientOptions options = new NetClientOptions().setConnectTimeout(10000);
         NetClient client = vertx.createNetClient(options);
-        client.connect(31552 , host, res -> {
+        client.connect(port , host, res -> {
             if (res.succeeded()) {
                 System.out.println("Connected1!");
                 NetSocket socket = res.result();
